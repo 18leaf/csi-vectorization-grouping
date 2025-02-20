@@ -8,6 +8,12 @@
 #include "logger.h"
 #include "message.h"
 #include "message_queue.h"
+#include <thread>
+#include <atomic>
+#include <sstream>
+#include <string>
+#include <chrono>
+
 
 class IPCManager {
 // create thread for processes related to ipc -> connect to ipc channel, read from and validate, send to messagequeue
@@ -68,7 +74,10 @@ private:
 		Logger::log("IPCManager::run");
 		while (isRunning) {
 			// read line from ipcChannel, check if empty
-			if (std::string line = ipcChannel->read(); !line.empty()) {
+			std::string line = ipcChannel->read();
+			// sleep for 20 ms to simulate delay
+			std::this_thread::sleep_for(std::chrono::milliseconds(20));
+			if (!line.empty()) {
 				//create new msg object
 				// boolean parse csv (also updates Message msg with parsed content) from format group_id, timestamp, contents
 				// TODO add checksum or data corruption/verification methods
@@ -81,8 +90,8 @@ private:
 				}
 			} else {
 				// sleep for n milliseconds if no lines exist (give time for more data to pop up)
-				// set to 10 seconds for now
-				std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+				// set to 1 second for now
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 			}
 		}
 		Logger::log("IPCManager::stopped");

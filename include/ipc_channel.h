@@ -14,5 +14,12 @@ public:
 	virtual std::string read() = 0;
 
 };
+// real for linux synthetic for windows for testing
+#ifdef _WIN32
+IPCChannel* createSyntheticIPCChannel(const std::string& filepath);
+#else
+IPCChannel* createRealIPCChannel(const std::string& pipePath);
+#endif
+
 
 #endif //IPC_CHANNEL_H

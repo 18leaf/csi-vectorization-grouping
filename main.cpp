@@ -1,6 +1,3 @@
-
-
-
 #include "include/concurrent_hashmap.h"
 #include "include/IPCManager.hpp"
 #include "include/ipc_channel.h"
@@ -11,11 +8,16 @@
 #include "include/vectorizer.h"
 #include "include/WorkerPool.hpp"
 
+#ifdef _WIN32 // this is for testing purposes right now
 // access from ipc_channel.cpp and vectorizer.cpp in src, will connect a different way later
 // ipc connection (faking it for now)
 extern IPCChannel* createSyntheticIPCChannel(const std::string& filepath);
+#else   /// real pipe on linux
+extern IPCChannel* createRealIPCChannel(const std::string& pipePath);
+#endif
 // vectorization module (also faking vector embeddings for now)
 extern Vectorizer* createVectorizer();
+
 
 int main() {
 	/*
@@ -57,14 +59,18 @@ int main() {
 	 *			log stored result
 	 */
 
-	Logger::log("Main Start");
+	Logger::log("Main::Start");
 
 	// initialize shared memory/datastructures
 	MessageQueue<Message> messageQueue;
 	ConcurrentHashMap groupBuckets;
 
 	// connect to fake IPC channel (just reading from data/synthetic_ipc.csv)
+#ifdef _WIN32
 	IPCChannel* ipcChannel = createSyntheticIPCChannel("data/synthetic_ipc.csv");
+#else // real ipc
+	IPCChannel* ipcChannel = createRealIPCChannel("/tmp/ipc_pipe");
+#endif
 	// connect to fake vector embeddings
 	Vectorizer* vectorizer = createVectorizer();
 
@@ -91,6 +97,6 @@ int main() {
 	delete ipcChannel;
 	delete vectorizer;
 
-	Logger::log("Successful Application Termination");
+	Logger::log("Main::Exit");
 	return 0;
 }

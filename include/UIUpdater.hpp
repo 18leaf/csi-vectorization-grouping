@@ -50,7 +50,7 @@ private:
 			auto snapshot = groupBuckets.snapshot();
 			// TODO add UI interface render
 			// renderUI(snapshot)
-			Logger::log("size = " + std::to_string(snapshot.size()));
+			Logger::log("UIUpdater: Snapshot = " + std::to_string(snapshot.size()));
 		}
 		Logger::log("UIUpdater::stopped");
 	};
