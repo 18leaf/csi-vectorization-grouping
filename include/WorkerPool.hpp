@@ -74,6 +74,7 @@ private:
 			vector_object.embedding = embedding;
 			vector_object.group_id = msg.group_id;
 			vector_object.timestamp = msg.timestamp;
+			vector_object.original_message = msg.content;
 
 			// safely append vector object to the assigned group buckets
 			group_buckets.append(msg.group_id, vector_object);

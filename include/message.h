@@ -22,6 +22,8 @@ struct VectorObject {
 	std::vector<float> embedding;
 	std::string group_id;
 	std::chrono::system_clock::time_point timestamp;
+	// retain original message content for demo purposes
+	std::string original_message;
 	// std::string message_id
 };
 
