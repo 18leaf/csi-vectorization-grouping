@@ -18,6 +18,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # sender source for linux
 add_executable(sender csv_sender.cpp)
 
+# demo/test to show deadlock example + resolution
+add_executable(msg-deadlock-demo extras/message_queue_deadlock_demo.cpp)
+
 # copy data to runtime for testing
 add_custom_command(TARGET sender POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory

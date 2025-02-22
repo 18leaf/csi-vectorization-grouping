@@ -21,6 +21,20 @@ public:
 		_cv.notify_one();
 	}
 
+
+
+	/***
+	 * BELOW is a location where deadlock can occur
+	 * dequeue() function can lead to indefinite blocking when
+	 * other threads call it (the workerpool threads)
+	 *
+	 *  bool try_dequeue solves this issue by introducing a timeout,
+	 *  in worker pool, this try_dequeue is called, and if it is successful
+	 *  it updates/assigns the item (of message type) to a variable, which
+	 *  is then processed by the workerpool thread
+	 */
+
+
 	//dequeue item
 	// had issues with blocking dequeue.. if there were no items left the cv wait got this stuck and didnt let thread exit
 	T dequeue() {
@@ -36,6 +50,7 @@ public:
 	bool try_dequeue(T& item, std::chrono::milliseconds timeout) {
 		// updates item and return false if emtpy queue
 		std::unique_lock<std::mutex> lock(_mutex);
+		// check for deadlock here (by waiting for a time and then returning false)
 		if (!_cv.wait_for(lock, timeout, [this] { return !_queue.empty(); })) {
 			return false;
 		}
