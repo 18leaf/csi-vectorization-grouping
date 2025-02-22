@@ -10,7 +10,7 @@ class DummyVectorizer : public Vectorizer {
 public:
 	std::vector<float> vectorize(const std::string& text) override {
 		// only size of message
-		return std::vector<float>(text.size(), 1.0f);
+		return std::vector(text.size(), 1.0f);
 	}
 };
 

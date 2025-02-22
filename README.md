@@ -29,14 +29,11 @@ This project is part of the CS 3502 course on multi-threaded programming and IPC
 ## Project Structure
 
     project-root/ 
-    ├── CMakeLists.txt 
+    ├── CMakeLists.txt
     ├── README.md
     │
-    ├── data/
-    │   └── synthetic_ipc.csv
-    │
-    ├── extras/ 
-    │   └── message_queue_deadlock_demo.cpp
+    ├── main.cpp                              # 
+    ├── csv_sender.cpp                        # (Linux) reads from the synthetic data file and sends messages to the pipe with delays
     │
     ├── include/ 
     │   ├── concurrent_hashmap.h
@@ -53,8 +50,10 @@ This project is part of the CS 3502 course on multi-threaded programming and IPC
     │   └── ipc_channel.cpp                   # (Linux) establishes ipc connection (Windows) opens data csv file
     │   └── vectorizer.cpp                    # placeholder for actual implementation of a vectorizer (outside of OS assignment scope)
     │
-    ├── main.cpp                              # 
-    └── csv_sender.cpp                        # (Linux) reads from the synthetic data file and sends messages to the pipe with delays
+    ├── data/synthetic_ipc.csv
+    │
+    └── extras/message_queue_deadlock_demo.cpp
+    
 
 ___
 ## Installation

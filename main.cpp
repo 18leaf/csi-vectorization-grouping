@@ -20,7 +20,7 @@ extern Vectorizer* createVectorizer();
 
 
 int main() {
-	/*
+	/*  PSEUDOCODE
 	 *	initialize log (timestamp, content)
 	 *	initialize thread safe messagequeue
 	 *	initiazlize conccurent hashmap where group_id -> bucket (vector objects)
@@ -51,8 +51,8 @@ int main() {
 	 *
 	 *	start thread for concurrent hashmap to UI -> concurrent hashmap access
 	 *		wait x time, loop over bucket, update ui
-	 *		start timere
-	 *		while (timer % (increment) == 0)
+	 *		define increment
+	 *		while (true) wait increment each time
 	 *			copy bucket from lock
 	 *			similarity search of bucket
 	 *			store result
@@ -78,13 +78,13 @@ int main() {
 	IPCManager ipcManager(ipcChannel, messageQueue);
 	ipcManager.start();
 
-	// define num of workers (for project requirements of 10 threads there are 2 outside of this wokre pool 1 for IPC manager, 1 for UI Updater,)
+	// define num of workers (for project requirements of 10 threads there are 2 outside of this worker pool 1 for IPC manager, 1 for UI Updater,)
 	constexpr size_t numWorkerThreads = 6;
 	WorkerPool workerPool(messageQueue, groupBuckets, vectorizer, numWorkerThreads);
 	workerPool.start();
 
-	// update time
-	UIUpdater uiUpdater(groupBuckets, std::chrono::milliseconds(5000));
+	// initialize UI updater -> set time to update 5 seconds for now
+	UIUpdater uiUpdater(groupBuckets, std::chrono::seconds(5));
 	uiUpdater.start();
 
 	// time for this to run
