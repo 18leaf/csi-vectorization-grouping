@@ -12,8 +12,9 @@ set(RECEIVER_SOURCES
         src/vectorizer.cpp
 )
 
-add_executable(receiver ${RECEIVER_SOURCES})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+add_executable(receiver ${RECEIVER_SOURCES})
+
 
 # sender source for linux
 add_executable(sender csv_sender.cpp)

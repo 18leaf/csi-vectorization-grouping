@@ -80,13 +80,13 @@ private:
 			if (!line.empty()) {
 				//create new msg object
 				// boolean parse csv (also updates Message msg with parsed content) from format group_id, timestamp, contents
-				// TODO add checksum or data corruption/verification methods
+				// TODO add data corruption/verification methods
 				if (Message msg; parseCSVLine(line, msg)) {
 					// if msg was parsed and valid continue
 					msgQueue.enqueue(msg);
 				} else {
 					// something wrong happened with parsing that line
-					Logger::log("Parse Failure - " + line);
+					Logger::log("IPCManager::Parse Error - " + line);
 				}
 			} else {
 				// sleep for n milliseconds if no lines exist (give time for more data to pop up)
